@@ -1,7 +1,7 @@
 <template>
   <div
     :tabindex="searchable ? -1 : tabindex"
-    :class="{ 'multiselect--active': isOpen, 'multiselect--disabled': disabled, 'multiselect--above': isAbove }"
+    :class="{ 'multiselect--active': isOpen && !overrideOpen, 'multiselect--disabled': disabled, 'multiselect--above': isAbove }"
     @focus="activate()"
     @blur="searchable ? false : deactivate()"
     @keydown.self.down.prevent="pointerForward()"
@@ -90,7 +90,7 @@
       <transition name="multiselect">
         <div
           class="multiselect__content-wrapper"
-          v-show="isOpen"
+          v-show="isOpen && !overrideOpen"
           @focus="activate"
           tabindex="-1"
           @mousedown.prevent
@@ -297,6 +297,10 @@ export default {
     tabindex: {
       type: Number,
       default: 0
+    },
+    overrideOpen: {
+      type: Boolean,
+      default: false
     }
   },
   computed: {
